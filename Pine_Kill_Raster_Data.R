@@ -35,12 +35,21 @@ tree_dirs = list.dirs(paste0(databasin_dir, "Western_Conterminous_US_Killed_Tree
   
   # Set the extent to the same as the states with MPB
   pine_kill_western_US_brick = extend(pine_kill_western_US_brick, extent(mpb_states))
+  proj4string(pine_kill_western_US_brick) = proj4_master
   
   # These won't be preserved in the NCDF save below
   names(pine_kill_western_US_brick) = paste0("pineKill_", kill_years)
   
   # Save as ncdf rather than rdata.  Rhis should be more resistant to incompatability to R version changes.
-  writeRaster(pine_kill_western_US_brick, filename = paste0(spatial_data_output_dir, "pine_kill_western_US_brick.nc"), format = "CDF" )
+  writeRaster(pine_kill_western_US_brick, filename = paste0(spatial_data_output_dir, "pine_kill_western_US_brick.nc"), format = "CDF", overwrite = T)
 
-  # rrr = brick(paste0(spatial_data_output_dir, "pine_kill_western_US_brick.nc"), crs = proj4_master)
+  pine_kill_western_US_brick = brick(paste0(spatial_data_output_dir, "pine_kill_western_US_brick.nc"))
+  pine_kill_western_US_brick
+  
+  
+  # Raster masked by the western states:
+  pine_mask = mask(x = subset(bbb, 1), mask = mpb_states)
+  sum(is.na(pine_mask[]))
+  pine_mask[!is.na(pine_mask)] = 1
+  writeRaster(pine_mask, filename = paste0(spatial_data_output_dir, "pine_mask.nc"), format = "CDF")
   

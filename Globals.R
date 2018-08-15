@@ -1,8 +1,8 @@
 # The years for which we have pine kill data from the Databasin data sets
 kill_years = 1997:2010
 
-# The years for which we have weather data from Daymet
-survival_years = 1981:2016
+# The years for which we have daymet weather data:
+daymet_years = 1980:2016
 
 # Proj4string for lon/lat projection
 proj4_lon_lat = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
@@ -11,7 +11,7 @@ proj4_lon_lat = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
 proj4_master = "+proj=lcc +lat_1=25 +lat_2=60 +lat_0=42.5 +lon_0=-100 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs +towgs84=0,0,0"
 
 # Location of large spatial data sets
-spatial_data_input_dir = "E:/Data/spatial_data/"
+spatial_data_dir = "E:/Data/spatial_data/"
 
 # Where to write derived spatial data
 spatial_data_output_dir = "E:/Data/derived_spatial_data/"
@@ -25,8 +25,8 @@ daymet_output_dir = "E:/Data/Daymet/daymet_output/"
 # Location of the original daymet data files
 daymet_dir = "E:/Data/Daymet/"
 
-# Location of smaller data sets (stored within this repository)
-derived_data_dir = "derived_data/"
+# local data dir
+local_dat_dir = "data/"
 
 
 # Shapefile layer name for the US National Parks
