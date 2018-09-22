@@ -14,7 +14,7 @@ national_forests_raster_mask[!is.na(national_forests_raster_mask[])] = 1
 
 plot(national_forests_raster_mask)
 
-# National Forests within pine range:
+# National Forests within pine range: ---------------------
 pine_range_national_forests = readOGR(dsn = paste0(spatial_data_output_dir, "pine_range_polygons_national_forests"),
                                       layer = "pine_range_polygons_national_forests")
 plot(pine_range_national_forests)
@@ -36,7 +36,7 @@ writeRaster(
 
 
 
-# Data tables of survival and tree kill
+# Data tables of survival and tree kill ---------------------
 require(data.table)
 kill_brick = brick(paste0(spatial_data_output_dir, "pine_kill_western_US_brick.nc"), crs = proj4_master)
 survival_brick = brick(paste0(spatial_data_output_dir, "mpb_overwinter_survival_western_US_brick.nc"))

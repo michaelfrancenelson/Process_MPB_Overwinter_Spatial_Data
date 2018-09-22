@@ -185,6 +185,7 @@ fwrite(surv_dt, paste0(spatial_data_output_dir, "modeled_survival_daymet_data_ta
 
 
 # Create bricks for winter and annual min temps ----------------
+surv_dt = fread(paste0(spatial_data_output_dir, "modeled_survival_daymet_data_table.csv"))
 pine_mask = raster(paste0(spatial_data_output_dir, "pine_mask.nc"), crs = proj4_master)
 
 # Make a raster stack with the same extent and resolution as the tree kill stack

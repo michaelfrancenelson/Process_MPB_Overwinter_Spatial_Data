@@ -23,7 +23,8 @@ mpb_states@data = mpb_states@data[, c("STUSPS", "NAME")]
 names(mpb_states) = c("abbr", "name")
 head(mpb_states)
 
-
+mpb_usa = SpatialPolygonsDataFrame(gBuffer(mpb_states, width = 0), data = data.frame(1), match.ID = F)
+plot(mpb_usa)
 # National Forests -----------------------------
 
 # Read in the national forest spatial data, and make sure it is in the right projection
@@ -71,6 +72,66 @@ writeOGR(
   mpb_states,
   dsn = paste0(spatial_data_output_dir, "mpb_states"),
   layer = "mpb_states", driver = "ESRI Shapefile")  
+writeOGR(
+  mpb_usa,
+  dsn = paste0(spatial_data_output_dir, "mpb_usa"),
+  layer = "mpb_usa", driver = "ESRI Shapefile")  
+
+
+# Case Study area polygons ---------------------
+national_forests_polygons = readOGR( 
+  dsn = paste0(spatial_data_output_dir, "national_forests_polygons"), 
+  layer = "national_forests_polygons")
+
+# Combine araphao, white river, and medicine bow into the same study site,
+# and simplify the other study forest names:
+
+case_study_site_names = data.frame(
+  case_study = c(
+  "Colorado", 
+  "Colorado",
+  "Colorado",
+  "Colorado",
+  "Beaverhead",
+  "Beaverhead",
+  "Black Hills",
+  "Colville"
+), 
+forest = c(
+  "Roosevelt", 
+  "Arapaho", 
+  "Medicine Bow", 
+  "White River",
+  "Beaverhead", 
+  "Deerlodge", 
+  "Black Hills", 
+  "Colville"
+), stringsAsFactors = F)
+
+
+case_study_site_polygons = subset(national_forests_polygons, name %in% paste0(case_study_site_names$forest, " National Forest"))
+case_study_site_polygons$forest_name = as.character(case_study_site_polygons$name)
+case_study_site_polygons$forest_name = gsub(" National Forest", "", case_study_site_polygons$name)
+case_study_site_polygons$forest_num = as.numeric(factor(case_study_site_polygons$name))
+
+case_study_site_names$case_study
+match(x = case_study_site_polygons$forest_name, case_study_site_names$forest)
+case_study_site_polygons$study_name = case_study_site_names$case_study[match(x = case_study_site_polygons$forest_name, case_study_site_names$forest)]
+case_study_site_polygons$study_num = as.numeric(factor(case_study_site_polygons$study_name))
+
+
+plot(case_study_site_polygons)
+sort(national_forests_polygons$name)
+
+writeOGR(
+  case_study_site_polygons, 
+  dsn = paste0(spatial_data_output_dir, "case_study_site_polygons"), 
+  layer = "case_study_site_polygons", driver = "ESRI Shapefile", overwrite = T)  
+
+
+# studyForestsSPDF = subset(nationalForestsSPDF, FOREST %in% forestNames$oldName)
+# studyForestsSPDF$FOREST = mapvalues(studyForestsSPDF$FOREST, from = forestNames$oldName, to = forestNames$newName)
+# 
 
 # Pine species polygons -----------------------
 
